@@ -1,7 +1,6 @@
 {% extends "pages/base_template.html" %}
 {% block content %}
     {%  load static %}
-    {% static "pages/media/menu" as baseUrl %}
     <link rel="stylesheet" type="text/css" href="{% static 'pages/menupage.css' %}">
 
     <div class="pengu_icon1" id="pengu_icon1">
@@ -17,57 +16,19 @@
         {% for drink in drinks %}
             <div class="{{drink.bgcolor}}" >
                 <div class="drink_img">
-                    <img src="{{ baseUrl }}/{{ drink.image }}" alt="Icon" width="150" height="150">
+                    <img src="{{ drink.image.url }}" alt="Icon" width="150" height="150">
                 </div>
                 <div class="drink_name">{{ drink.name }}</div>
                 <div class="drink_subname">{{ drink.subname }}</div>
                 <div class="drink_price">{{ drink.price_medium }} - Medium   |   {{ drink.price_large }} - Large</div>
-                <a onclick ="hidePrevPage()">
-                    <button class="pengu-milk">ADD TO CART ></button>
-                </a>
+                {% if drink.offer %}
+                    <a onclick ="hidePrevPage()">
+                        <button class="pengu-milk">ADD TO CART ></button>
+                    </a>
+                {% endif %}
+
             </div>
         {% endfor %}
     </div>
-
-
-       <!--
-    <script>
-        let slideIndex = 1;
-        showDivs(slideIndex);
-
-        function plusDivs(n) {
-          showDivs(slideIndex += n);
-        }
-
-        function showDivs(n) {
-          let i;
-          let x = document.getElementsByClassName("mySlide");
-          if (n > x.length) {slideIndex = 1}
-          if (n < 1) {slideIndex = x.length}
-          for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-          }
-          x[slideIndex-1].style.display = "block";
-        }
-
-        let sizeContainer = document.getElementById("size_container");
-        let sizeText1 = document.getElementById("size_black");
-        let sizeText2 = document.getElementById("size_white");
-        sizeContainer.style.display = "none";
-
-        function hidePrevPage(){
-            let menuBox = document.getElementById("menu_container");
-            let penguIcon1 = document.getElementById("pengu_icon1");
-            let penguIcon2 = document.getElementById("pengu_icon2");
-            let penguName1 = document.getElementById("pengu_black");
-            let penguName2 = document.getElementById("pengu_white");
-            menuBox.style.display = "none";
-            penguIcon1.style.display = "none";
-            penguIcon2.style.display = "none";
-            penguName1.style.display = "none";
-            penguName2.style.display = "none";
-            sizeContainer.style.display = "block";
-        }
-    </script> -->
 
 {% endblock content%}

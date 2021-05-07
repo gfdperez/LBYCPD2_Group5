@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Drink
+from django.contrib.auth.models import auth
+from django.contrib import messages
+from django.contrib.auth import get_user_model, login
 
 
 def homePage(request):
@@ -7,102 +10,77 @@ def homePage(request):
 
 
 def menuPage(request):
-    drink1 = Drink()
-    drink1.name = 'PENGU'
-    drink1.subname = 'MILK MILKTEA'
-    drink1.price_medium = 79
-    drink1.price_large = 89
-    drink1.image = 'PENGU MILK.png'
-    drink1.bgcolor = 'item1'
-
-    drink2 = Drink()
-    drink2.name = 'ROYAL'
-    drink2.subname = 'OKI-OKI'
-    drink2.price_medium = 89
-    drink2.price_large = 99
-    drink2.image = 'ROYAL OKI.png'
-    drink2.bgcolor = 'item2'
-
-    drink3 = Drink()
-    drink3.name = 'EMPEROR'
-    drink3.subname = 'CREAMCHEESE OREO'
-    drink3.price_medium = 99
-    drink3.price_large = 109
-    drink3.image = 'EMPEROR.png'
-    drink3.bgcolor = 'item3'
-
-    drink4 = Drink()
-    drink4.name = 'GENTOO'
-    drink4.subname = 'CARAMEL CREME'
-    drink4.price_medium = 99
-    drink4.price_large = 109
-    drink4.image = 'GENTOO CARAMEL.png'
-    drink4.bgcolor = 'item4'
-
-    drink5 = Drink()
-    drink5.name = 'ROCKHOPPER'
-    drink5.subname = 'WINTERMELON MILK'
-    drink5.price_medium = 99
-    drink5.price_large = 109
-    drink5.image = 'ROCKHOPPER WM.png'
-    drink5.bgcolor = 'item5'
-
-    drink6 = Drink()
-    drink6.name = 'VANILLA'
-    drink6.subname = 'CRUMBLE DELUXE'
-    drink6.price_medium = 99
-    drink6.price_large = 109
-    drink6.image = 'VANILLA CRUMBLE.png'
-    drink6.bgcolor = 'item6'
-
-    drink7 = Drink()
-    drink7.name = 'ADELIE'
-    drink7.subname = 'BERRY APOLLO'
-    drink7.price_medium = 99
-    drink7.price_large = 119
-    drink7.image = 'ADELIE BERRY.png'
-    drink7.bgcolor = 'item7'
-
-    drink8 = Drink()
-    drink8.name = 'MATCHA'
-    drink8.subname = 'SUPREME'
-    drink8.price_medium = 99
-    drink8.price_large = 119
-    drink8.image = 'MATCHA SUPREME.png'
-    drink8.bgcolor = 'item8'
-
-    drink9 = Drink()
-    drink9.name = 'FAIRY'
-    drink9.subname = 'LYCHEE'
-    drink9.price_medium = 75
-    drink9.price_large = 85
-    drink9.image = 'FAIRY LYCHEE.png'
-    drink9.bgcolor = 'item9'
-
-    drink10 = Drink()
-    drink10.name = 'FAIRY'
-    drink10.subname = 'LYCHEE YAKULT'
-    drink10.price_medium = 89
-    drink10.price_large = 99
-    drink10.image = 'FAIRY YAKULT.png'
-    drink10.bgcolor = 'item10'
-
-    drink11 = Drink()
-    drink11.name = 'KING'
-    drink11.subname = 'CHOCO MILK'
-    drink11.price_medium = 89
-    drink11.price_large = 99
-    drink11.image = 'KING CHOCO.png'
-    drink11.bgcolor = 'item11'
-
-    drink12 = Drink()
-    drink12.name = 'KING'
-    drink12.subname = 'CHUNKY CHOCO'
-    drink12.price_medium = 99
-    drink12.price_large = 109
-    drink12.image = 'KING CHUNKY.png'
-    drink12.bgcolor = 'item12'
-
-    drinks = [drink1, drink2, drink3, drink4, drink5, drink6, drink7, drink8, drink9, drink10, drink11, drink12]
-
+    drinks = Drink.objects.all()
     return render(request, 'pages/menu_page.html', {'drinks': drinks, 'title': 'Menu'})
+
+
+def accountPage(request):
+    MyUser = request.user
+    return render(request, 'pages/account_page.html', {'title': MyUser.first_name})
+
+
+def signOut(request):
+    auth.logout(request)
+    return redirect("/")
+
+
+def settingsPage(request):
+    MyUser = request.user
+    Accounts = get_user_model()
+    if request.method == 'POST':
+        firstName = request.POST['fnType']
+        lastName = request.POST['lnType']
+        username = request.POST['unType']
+        currPass = request.POST['pValue']
+        newPass = request.POST['pType']
+        confirmPass = request.POST['confirmPType']
+        emailAdd = request.POST['emailType']
+        mobileNo = request.POST['numType']
+        homeAdd = request.POST['addType']
+
+        if firstName != "":
+            MyUser.first_name = firstName
+        if lastName != "":
+            MyUser.last_name = lastName
+        if username != "":
+            if Accounts.objects.filter(username=username).exists():
+                messages.info(request, 'Username Taken')
+                return redirect('/user/myAccount/settings')
+            else:
+                MyUser.username = username
+        if emailAdd != "":
+            if Accounts.objects.filter(email=emailAdd).exists():
+                messages.info(request, 'Email Taken')
+                return redirect('/user/myAccount/settings')
+            else:
+                MyUser.email = emailAdd
+        if mobileNo != "":
+            if len(mobileNo) != 11:
+                messages.info(request, 'Invalid Contact Number')
+                return redirect('/user/myAccount/settings')
+            else:
+                MyUser.mobile_no = mobileNo
+        if homeAdd != "":
+            MyUser.home_add = homeAdd
+        if currPass != "":
+            if MyUser.check_password(currPass):
+                if newPass == confirmPass:
+                    if Accounts.objects.filter(password=newPass).exists():
+                        messages.info(request, 'Password Taken')
+                        return redirect('/user/myAccount/settings')
+                    else:
+                        MyUser.set_password(newPass)
+                else:
+                    messages.info(request, 'Passwords Do Not Match')
+                    return redirect('/user/myAccount/settings')
+            else:
+                messages.info(request, 'Incorrect Current Password')
+                return redirect('/user/myAccount/settings')
+        MyUser.save()
+        login(request, MyUser)
+        return render(request, 'pages/account_page.html', {'title': MyUser.first_name})
+
+    else:
+        return render(request, 'pages/settings_page.html', {'title': MyUser.first_name})
+
+

@@ -24,3 +24,5 @@ urlpatterns = [
     path('user/', include('pages.urls')),
     path('owner/', include('ownerlogin.urls'))
 ]
+
+urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
