@@ -25,6 +25,7 @@
       <list>
         <option value="$MODULE_DIR$/loginsignup/templates" />
         <option value="$MODULE_DIR$/pages/templates" />
+        <option value="$MODULE_DIR$/ownerpages/templates" />
       </list>
     </option>
   </component>

@@ -8,4 +8,4 @@ class Drink(models.Model):
     price_large = models.IntegerField()
     image = models.ImageField(upload_to='menu')
     bgcolor = models.CharField(max_length=20)
-    offer = models.BooleanField(default=False)
+    offer = models.BooleanField(default=True)

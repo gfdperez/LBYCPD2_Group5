@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'loginsignup.apps.LoginsignupConfig',
     'pages.apps.PagesConfig',
     'ownerlogin.apps.OwnerloginConfig',
+    'ownerpages.apps.OwnerpagesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

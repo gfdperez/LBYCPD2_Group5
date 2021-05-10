@@ -17,19 +17,21 @@
 <body>
     <div class="wrapper">
 
-        <div class="whiteBox"></div>
+        <div class="whiteBox">
+            <form onclick="" method="post">
+                {% csrf_token %}
+                    <input type="text" id="userName" name="userName" placeholder=" Admin Username">
+                    <input type="password" id="password" name="password" placeholder="Admin Password">
+                    <input type="submit" value="Proceed">
+            </form>
 
-        <form onclick="" method="post">
-            {%  csrf_token %}
-            <input type="password" id="password" name="password" placeholder="Enter Password">
-            <input type="submit" value="Proceed">
-        </form>
-
-        <div class="errorMessage">
-            {% for message in messages %}
-                <p4> {{ message }}</p4>
-            {% endfor %}
+            <div class="errorMessage">
+                {% for message in messages %}
+                    <p4> {{ message }} </p4>
+                {% endfor %}
+            </div>
         </div>
+
 
         <div class="logo_pengu">
             <img src="{% static 'loginsignup/media/pengu_logo.png' %}" alt="Pengu Logo" width="837" height="837">
