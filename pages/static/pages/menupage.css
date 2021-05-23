@@ -48,7 +48,7 @@ p3{
     width: 1191px;
     height: 1681px;
     left: 124px;
-    top: 216px;
+    top: 240px;
     background: #FFFFFF;
     box-shadow: -5px 11px 4px #8CD3F7, inset 11px -11px 3px -1px #C8EAFB;
     border-radius: 85px;
@@ -349,5 +349,20 @@ p5{
     position: absolute;
     left: 88px;
     top: 114px;
+}
+
+p8{
+    position: absolute;
+    height: 16px;
+    top: 210px;
+    left: 200px;
+    font-family: Consolas, serif;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 16px;
+    text-align: center;
+    color: #FF0000;
+    align-self: center;
 }
 

@@ -13,7 +13,7 @@
                         <p class="name">Name:</p>
                         <input type="text" name="{{ slot.nameType }}" value="{{ slot.name_unique }}" id="nameType">
                         <p class="quantity">Quantity:</p>
-                        <input type="number" name="{{ slot.quanType }}" value="{{ slot.quantity_unique }}">
+                        <input type="number" min="0" name="{{ slot.quanType }}" value="{{ slot.quantity_unique }}">
                         <p class="unit">Unit/Measurement:</p>
                         <input type="text" name="{{ slot.unitType }}" value="{{ slot.unit_unique }}" id="unitType">
                     </div>
