@@ -148,59 +148,63 @@ def infoPage(request):
         contact = request.POST['numberInput']
         email = request.POST['emailInput']
         address = request.POST['addressInput']
-        mode = request.POST['mode']
-        if 'element11' in request.POST:
-            quantity1 = request.POST['element11']
-            flavor1 = request.POST['element12']
-            size1 = request.POST['element13']
-            price1 = request.POST['element14']
-            Orders.objects.create(name=name, contact=contact, email=email,
-                                  address=address, mode=mode, quantity=quantity1,
-                                  flavor=flavor1, size=size1, price=price1, status="Pending")
-            Cart.objects.get(username=request.user.username, quantity=quantity1,
-                             item_name=flavor1, price=price1).delete()
-        if 'element21' in request.POST:
-            quantity2 = request.POST['element21']
-            flavor2 = request.POST['element22']
-            size2 = request.POST['element23']
-            price2 = request.POST['element24']
-            Orders.objects.create(name=name, contact=contact, email=email,
-                                  address=address, mode=mode, quantity=quantity2,
-                                  flavor=flavor2, size=size2, price=price2, status="Pending")
-            Cart.objects.get(username=request.user.username, quantity=quantity2,
-                             item_name=flavor2, price=price2).delete()
-        if 'element31' in request.POST:
-            quantity3 = request.POST['element31']
-            flavor3 = request.POST['element32']
-            size3 = request.POST['element33']
-            price3 = request.POST['element34']
-            Orders.objects.create(name=name, contact=contact, email=email,
-                                  address=address, mode=mode, quantity=quantity3,
-                                  flavor=flavor3, size=size3, price=price3, status="Pending")
-            Cart.objects.get(username=request.user.username, quantity=quantity3,
-                             item_name=flavor3, price=price3).delete()
-        if 'element41' in request.POST:
-            quantity4 = request.POST['element41']
-            flavor4 = request.POST['element42']
-            size4 = request.POST['element43']
-            price4 = request.POST['element44']
-            Orders.objects.create(name=name, contact=contact, email=email,
-                                  address=address, mode=mode, quantity=quantity4,
-                                  flavor=flavor4, size=size4, price=price4, status="Pending")
-            Cart.objects.get(username=request.user.username, quantity=quantity4,
-                             item_name=flavor4, price=price4).delete()
-        if 'element51' in request.POST:
-            quantity5 = request.POST['element51']
-            flavor5 = request.POST['element52']
-            size5 = request.POST['element53']
-            price5 = request.POST['element54']
-            Orders.objects.create(name=name, contact=contact, email=email,
-                                  address=address, mode=mode, quantity=quantity5,
-                                  flavor=flavor5, size=size5, price=price5, status="Pending")
-            Cart.objects.get(username=request.user.username, quantity=quantity5,
-                             item_name=flavor5, price=price5).delete()
 
-        return redirect("/user/myOrder/")
+        if 'mode' not in request.POST or name == "" or contact == "" or email == "" or address == "":
+            messages.info(request, 'Invalid inputs! Try again')
+            return redirect("/user/myCart/")
+        else:
+            mode = request.POST['mode']
+            if 'element11' in request.POST:
+                quantity1 = request.POST['element11']
+                flavor1 = request.POST['element12']
+                size1 = request.POST['element13']
+                price1 = request.POST['element14']
+                Orders.objects.create(name=name, contact=contact, email=email,
+                                      address=address, mode=mode, quantity=quantity1,
+                                      flavor=flavor1, size=size1, price=price1, status="Pending")
+                Cart.objects.get(username=request.user.username, quantity=quantity1,
+                                 item_name=flavor1, price=price1).delete()
+            if 'element21' in request.POST:
+                quantity2 = request.POST['element21']
+                flavor2 = request.POST['element22']
+                size2 = request.POST['element23']
+                price2 = request.POST['element24']
+                Orders.objects.create(name=name, contact=contact, email=email,
+                                      address=address, mode=mode, quantity=quantity2,
+                                      flavor=flavor2, size=size2, price=price2, status="Pending")
+                Cart.objects.get(username=request.user.username, quantity=quantity2,
+                                 item_name=flavor2, price=price2).delete()
+            if 'element31' in request.POST:
+                quantity3 = request.POST['element31']
+                flavor3 = request.POST['element32']
+                size3 = request.POST['element33']
+                price3 = request.POST['element34']
+                Orders.objects.create(name=name, contact=contact, email=email,
+                                      address=address, mode=mode, quantity=quantity3,
+                                      flavor=flavor3, size=size3, price=price3, status="Pending")
+                Cart.objects.get(username=request.user.username, quantity=quantity3,
+                                 item_name=flavor3, price=price3).delete()
+            if 'element41' in request.POST:
+                quantity4 = request.POST['element41']
+                flavor4 = request.POST['element42']
+                size4 = request.POST['element43']
+                price4 = request.POST['element44']
+                Orders.objects.create(name=name, contact=contact, email=email,
+                                      address=address, mode=mode, quantity=quantity4,
+                                      flavor=flavor4, size=size4, price=price4, status="Pending")
+                Cart.objects.get(username=request.user.username, quantity=quantity4,
+                                 item_name=flavor4, price=price4).delete()
+            if 'element51' in request.POST:
+                quantity5 = request.POST['element51']
+                flavor5 = request.POST['element52']
+                size5 = request.POST['element53']
+                price5 = request.POST['element54']
+                Orders.objects.create(name=name, contact=contact, email=email,
+                                      address=address, mode=mode, quantity=quantity5,
+                                      flavor=flavor5, size=size5, price=price5, status="Pending")
+                Cart.objects.get(username=request.user.username, quantity=quantity5,
+                                 item_name=flavor5, price=price5).delete()
+            return redirect("/user/myOrder/")
     else:
         return render(request, 'pages/information_page.html', {'title': 'Information'})
 
@@ -254,7 +258,8 @@ def settingsPage(request):
                 MyUser.mobile_no = mobileNo
         if homeAdd != "":
             MyUser.home_add = homeAdd
-        if currPass != "":
+
+        if currPass != "" and newPass != "" and confirmPass != "":
             if MyUser.check_password(currPass):
                 if newPass == confirmPass:
                     if Accounts.objects.filter(password=newPass).exists():
@@ -268,6 +273,10 @@ def settingsPage(request):
             else:
                 messages.info(request, 'Incorrect Current Password')
                 return redirect('/user/myAccount/settings')
+        elif (currPass == "" and (newPass != "" or confirmPass != "")) or (currPass != "" and (newPass == "" or confirmPass == "")):
+            messages.info(request, "Incomplete password fields")
+            return redirect('/user/myAccount/settings')
+
         MyUser.save()
         login(request, MyUser)
         return render(request, 'pages/account_page.html', {'title': MyUser.first_name})
