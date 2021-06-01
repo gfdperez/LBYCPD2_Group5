@@ -1,6 +1,8 @@
+from datetime import date
 from django.shortcuts import render, redirect
-from pages.models import Drink
-from .models import Slot
+from pages.models import Drink, Orders
+from .models import Slot, Sales
+from django.contrib import messages
 from django.contrib.auth.models import auth
 
 
@@ -254,3 +256,125 @@ def inventoryPage(request):
         return render(request, 'ownerpages/inventory_page.html', {'slots': slots, 'title': 'Inventory'})
     else:
         return render(request, 'ownerpages/inventory_page.html', {'slots': slots, 'title': 'Inventory'})
+
+
+def ordersPage(request):
+    global orders
+    orders = list(Orders.objects.all().order_by('id'))
+    orders = orders[0:5]
+    for x in orders:
+        print(str(x)+"\n")
+    if request.method == 'POST':
+        if 'save1' in request.POST:
+            status1 = request.POST['statusValue1']
+            if status1 == "":
+                messages.info(request, 'Input an Order Status')
+                return redirect('/owner/account/orders')
+            else:
+                orders[0].status = status1
+                for x in orders:
+                    x.save()
+                return redirect('/owner/account/orders')
+        if 'completed1' in request.POST:
+            if Sales.objects.filter(today_date=date.today()).exists():
+                new_sale = Sales.objects.get(today_date=date.today()).today_sale + orders[0].price
+                Sales.objects.filter(today_date=date.today()).update(today_sale=new_sale)
+                Sales.objects.get(today_date=date.today()).save()
+                orders[0].delete()
+                return redirect('/owner/account/orders')
+            else:
+                Sales.objects.create(today_date=date.today(), today_sale=orders[0].price)
+                orders[0].delete()
+                return redirect('/owner/account/orders')
+        if 'save2' in request.POST:
+            status2 = request.POST['statusValue2']
+            if status2 == "":
+                messages.info(request, 'Input an Order Status')
+                return redirect('/owner/account/orders')
+            else:
+                orders[1].status = status2
+                for x in orders:
+                    x.save()
+                return redirect('/owner/account/orders')
+        if 'completed2' in request.POST:
+            if Sales.objects.filter(today_date=date.today()).exists():
+                new_sale = Sales.objects.get(today_date=date.today()).today_sale + orders[1].price
+                Sales.objects.filter(today_date=date.today()).update(today_sale=new_sale)
+                Sales.objects.get(today_date=date.today()).save()
+                orders[1].delete()
+                return redirect('/owner/account/orders')
+            else:
+                Sales.objects.create(today_date=date.today(), today_sale=orders[1].price)
+                orders[1].delete()
+                return redirect('/owner/account/orders')
+        if 'save3' in request.POST:
+            status3 = request.POST['statusValue3']
+            if status3 == "":
+                messages.info(request, 'Input an Order Status')
+                return redirect('/owner/account/orders')
+            else:
+                orders[2].status = status3
+                for x in orders:
+                    x.save()
+                return redirect('/owner/account/orders')
+        if 'completed3' in request.POST:
+            if Sales.objects.filter(today_date=date.today()).exists():
+                new_sale = Sales.objects.get(today_date=date.today()).today_sale + orders[2].price
+                Sales.objects.filter(today_date=date.today()).update(today_sale=new_sale)
+                Sales.objects.get(today_date=date.today()).save()
+                orders[2].delete()
+                return redirect('/owner/account/orders')
+            else:
+                Sales.objects.create(today_date=date.today(), today_sale=orders[2].price)
+                orders[2].delete()
+                return redirect('/owner/account/orders')
+        if 'save4' in request.POST:
+            status4 = request.POST['statusValue4']
+            if status4 == "":
+                messages.info(request, 'Input an Order Status')
+                return redirect('/owner/account/orders')
+            else:
+                orders[3].status = status4
+                for x in orders:
+                    x.save()
+                return redirect('/owner/account/orders')
+        if 'completed4' in request.POST:
+            if Sales.objects.filter(today_date=date.today()).exists():
+                new_sale = Sales.objects.get(today_date=date.today()).today_sale + orders[3].price
+                Sales.objects.filter(today_date=date.today()).update(today_sale=new_sale)
+                Sales.objects.get(today_date=date.today()).save()
+                orders[3].delete()
+                return redirect('/owner/account/orders')
+            else:
+                Sales.objects.create(today_date=date.today(), today_sale=orders[3].price)
+                orders[3].delete()
+                return redirect('/owner/account/orders')
+        if 'save5' in request.POST:
+            status5 = request.POST['statusValue5']
+            if status5 == "":
+                messages.info(request, 'Input an Order Status')
+                return redirect('/owner/account/orders')
+            else:
+                orders[4].status = status5
+                for x in orders:
+                    x.save()
+                return redirect('/owner/account/orders')
+        if 'completed5' in request.POST:
+            if Sales.objects.filter(today_date=date.today()).exists():
+                new_sale = Sales.objects.get(today_date=date.today()).today_sale + orders[4].price
+                Sales.objects.filter(today_date=date.today()).update(today_sale=new_sale)
+                Sales.objects.get(today_date=date.today()).save()
+                orders[4].delete()
+                return redirect('/owner/account/orders')
+            else:
+                Sales.objects.create(today_date=date.today(), today_sale=orders[4].price)
+                orders[4].delete()
+                return redirect('/owner/account/orders')
+
+    else:
+        return render(request, 'ownerpages/checkorder_page.html', {'orders': orders, 'title': 'Orders'})
+
+
+def salesPage(request):
+    sales = Sales.objects.all()
+    return render(request, 'ownerpages/sales_page.html', {'sales': sales, 'title': 'Daily Sales'})

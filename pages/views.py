@@ -242,13 +242,14 @@ def settingsPage(request):
                 messages.info(request, 'Username Taken')
                 return redirect('/user/myAccount/settings')
             else:
+                Cart.objects.filter(username=MyUser.username).update(username=username)
                 MyUser.username = username
-
         if emailAdd != "":
             if Accounts.objects.filter(email=emailAdd).exists():
                 messages.info(request, 'Email Taken')
                 return redirect('/user/myAccount/settings')
             else:
+                Orders.objects.filter(email=MyUser.email).update(email=emailAdd)
                 MyUser.email = emailAdd
         if mobileNo != "":
             if len(mobileNo) != 11:
