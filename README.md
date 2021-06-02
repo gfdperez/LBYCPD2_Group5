@@ -75,7 +75,7 @@
     - The bug that occurred in the account settings page during the demonstration is now fixed.
     - 90% of the project is fully working here, views sales and order feature in admin interface is not yet implemented.
   - 06-01-21:
-    - The order list feature for the admin interface is not working and it can now update the status of the orders of the customers
+    - The order list feature for the admin interface is now working and it can now update the status of the orders of the customers
     - The view daily sales is now implemented supported by the database
     - The program is now 100% complete
     - All bugs are also checked and fixed.
