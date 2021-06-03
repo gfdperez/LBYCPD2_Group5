@@ -15,7 +15,7 @@
   3. Download the zipped project repository, then extract it in your computer.
   4. Open the project through Pycharm.
   5. Click File -> Click Setting -> Click Project Tab -> Click Setting Icon -> Click Ok -> Click Apply
-  6. Click configure -> Click Remove All Version Control Directories
+  6. Click configure -> Remove All Version Control Directories
   7. Add Configuration -> Put a name -> Click Apply -> Click Run
 
   <br>Another step that you can choose for easier configuration, here's another set of instructions:<br>
